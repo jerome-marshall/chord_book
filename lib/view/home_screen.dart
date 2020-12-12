@@ -44,25 +44,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         height * 3.5, height / 2, height * 3.5, 0),
                     margin: EdgeInsets.all(height),
                     style: Style.neumorphicStyleDepth,
-                    child: SingleChildScrollView(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(
-                            0, (height * 2) + height / 2, 0, height * 3),
-                        child: Column(
-                          children: <Widget>[
-                            // Scale and Rhythm
-                            scaleAndRhythm(height, context),
+                    child: NotificationListener<OverscrollIndicatorNotification>(
+                      onNotification: (OverscrollIndicatorNotification overScroll){
+                        overScroll.disallowGlow();
+                        return false;
+                      },
+                      child: SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(
+                              0, (height * 2) + height / 2, 0, height * 3),
+                          child: Column(
+                            children: <Widget>[
+                              // Scale and Rhythm
+                              scaleAndRhythm(height, context),
 
-                            SizedBox(
-                              height: height,
-                            ),
+                              SizedBox(
+                                height: height,
+                              ),
 
-                            // Scale Degree
-                            scaleDegree(height, width),
+                              // Scale Degree
+                              scaleDegree(height, width),
 
-                            // Misc. Chords
-                            miscChords(height),
-                          ],
+                              // Misc. Chords
+                              miscChords(height),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -307,13 +313,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Container(
       alignment: Alignment.center,
-      height: height * 41,
       child: GridView.count(
         shrinkWrap: true,
         childAspectRatio: width / 3.5,
         crossAxisCount: 3,
         mainAxisSpacing: 8,
         crossAxisSpacing: 2,
+        physics: NeverScrollableScrollPhysics(),
         primary: false,
         children: list.map((e){
           String degree = '';
