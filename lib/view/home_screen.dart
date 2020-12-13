@@ -32,10 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
           resizeToAvoidBottomInset: false,
           body: Column(
             children: <Widget>[
+
               bookSelectButton(height, width),
               SizedBox(height: height * 2),
+
               songNoFieldName(height, width),
               SizedBox(height: height * 3),
+
               // Scale Rhythm Degree Misc
               Expanded(
                 child: Container(
@@ -58,9 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // Scale and Rhythm
                               scaleAndRhythm(height, context),
 
-                              SizedBox(
-                                height: height,
-                              ),
+                              SizedBox(height: height),
 
                               // Scale Degree
                               scaleDegree(height, width),
