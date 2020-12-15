@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+
 Song songFromJson(String str) => Song.fromJson(json.decode(str));
 
 String songToJson(Song data) => json.encode(data.toJson());
 
-class Song {
+class Song with ChangeNotifier {
   Song({
     this.number,
     this.name,
@@ -13,6 +15,16 @@ class Song {
     this.rhythm,
     this.misc,
   });
+
+  Song initialize(Song song){
+    this.number = song.number;
+    this.name = song.name;
+    this.scale = song.scale;
+    this.mode = song.mode;
+    this.rhythm = song.rhythm;
+    this.misc = song.misc;
+    return this;
+  }
 
   int number;
   String name;

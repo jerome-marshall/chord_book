@@ -1,27 +1,29 @@
-import 'dart:convert';
-
 import 'package:chord_book/model/song.dart';
+import 'package:flutter/foundation.dart';
 
-Book bookFromJson(String str) => Book.fromJson(json.decode(str));
+class Book with ChangeNotifier {
 
-String bookToJson(Book data) => json.encode(data.toJson());
+  String name;
+  Map<String, Song> songs;
 
-class Book {
   Book({
-    this.book,
+    this.name,
     this.songs,
   });
 
-  String book;
-  Map<String, Song> songs;
+  Book initialize(Book book){
+    this.name = book.name;
+    this.songs = book.songs;
+    return this;
+  }
 
   factory Book.fromJson(Map<String, dynamic> json) => Book(
-    book: json["book"],
+    name: json["name"],
     songs: Map.from(json["songs"]).map((k, v) => MapEntry<String, Song>(k, Song.fromJson(v))),
   );
 
   Map<String, dynamic> toJson() => {
-    "book": book,
+    "name": name,
     "songs": Map.from(songs).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
   };
 }

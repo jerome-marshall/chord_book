@@ -1,7 +1,12 @@
+import 'package:chord_book/model/book.dart';
+import 'package:chord_book/model/book_list.dart';
+import 'package:chord_book/model/song.dart';
 import 'package:chord_book/view/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
   static const String routeName = "/";
@@ -11,8 +16,12 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  BookList bookList;
+
   @override
   Widget build(BuildContext context) {
+    // loadData(context);
+
     return Scaffold(
       backgroundColor: HexColor('#E1E5EC'),
       body: Container(
@@ -27,26 +36,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    getData();
+    loadData();
   }
 
-  void getData() async {
-   //  Song song = new Song();
-   //  Map songBook = await JsonData().getInitSongBook();
-   // song.number = songBook['1']['number'];
-   // song.name = songBook['1']['name'];
-   // song.book = songBook['book'];
-   // song.scale = songBook['1']['scale'];
-   // song.mode = songBook['1']['mode'];
-   // song.rhythm = songBook['1']['rhythm'];
-   // song.misc = songBook['1']['misc'];
-   // song.transpose = 0;
-
-
-    Future.delayed(Duration(seconds: 2), (){
+  void loadData() async {
+    BookList bookList = BookList();
+    Future.delayed(Duration(seconds: 3)).then((_) {
+      BookList bookList = BookList();
+      Book book = Provider.of<Book>(context, listen: false).initialize(bookList.list[0]);
+      Song song = Provider.of<Song>(context, listen: false).initialize(book.songs["1"]);
       Navigator.pushReplacementNamed(
         context, HomeScreen.routeName,
-        // arguments: {'songBook': songBook}
       );
     });
   }

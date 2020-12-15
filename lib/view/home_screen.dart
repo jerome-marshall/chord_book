@@ -1,4 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:chord_book/model/book.dart';
+import 'package:chord_book/model/book_list.dart';
+import 'package:chord_book/model/song.dart';
 import 'package:chord_book/view/widgets/TestWithShader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,16 +19,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final textController = TextEditingController();
+  TextEditingController textController;
 
   var scaleRhythmGroup = AutoSizeGroup();
   var scaleDegGroup = AutoSizeGroup();
 
+  double width;
+  double height;
+
+  BookList bookList;
+
+  @override
+  void initState() {
+    super.initState();
+    textController = TextEditingController(text: "001");
+  }
+
   @override
   Widget build(BuildContext context) {
+
     SizeConfig().init(context);
-    double width = SizeConfig.safeBlockHorizontal;
-    double height = SizeConfig.safeBlockVertical;
+    width = SizeConfig.safeBlockHorizontal;
+    height = SizeConfig.safeBlockVertical;
 
     return SafeArea(
         child: Scaffold(
@@ -33,10 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Column(
             children: <Widget>[
 
-              bookSelectButton(height, width),
+              bookSelectButton(),
               SizedBox(height: height * 2),
 
-              songNoFieldName(height, width),
+              songNoFieldName(),
               SizedBox(height: height * 3),
 
               // Scale Rhythm Degree Misc
@@ -59,15 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             children: <Widget>[
                               // Scale and Rhythm
-                              scaleAndRhythm(height, context),
+                              scaleAndRhythm(),
 
                               SizedBox(height: height),
 
                               // Scale Degree
-                              scaleDegree(height, width),
+                              scaleDegree(),
 
                               // Misc. Chords
-                              miscChords(height),
+                              miscChords(),
                             ],
                           ),
                         ),
@@ -82,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget bookSelectButton(double height, double width) {
+  Widget bookSelectButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -102,14 +117,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     //   bundle = result;
                     // });
                   },
-                  child: TextWithShader(
-                    text: "Song Book",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: height * 4,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 1.5),
-                    colorList: Style.colorList3,
+                  child: Consumer<Book>(
+                    builder: (context, book, child) => TextWithShader(
+                      text: book.name,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: height * 4,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.5),
+                      colorList: Style.colorList3,
+                    ),
                   )
               )
           ),
@@ -118,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget songNoFieldName(double height, double width) {
+  Widget songNoFieldName() {
     return Container(
       height: height * 12.5,
       padding: EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
@@ -181,16 +198,18 @@ class _HomeScreenState extends State<HomeScreen> {
               style: Style.neumorphicStyleProject,
               child: Container(
                 child: Center(
-                  child: AutoSizeText(
-                    "Song Name",
-                    // song.name,
-                    style: TextStyle(
-                        fontSize: height * 3.5,
-                        color: Colors.grey[700],
-                        fontWeight: FontWeight.w300,
-                        fontFamily: 'Catamaran',
-                        letterSpacing: 1.5),
-                    maxLines: 3,
+                  child: Consumer<Song>(
+                    builder:(context, song, child) => AutoSizeText(
+                      song.name,
+                      // song.name,
+                      style: TextStyle(
+                          fontSize: height * 3.5,
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Catamaran',
+                          letterSpacing: 1.5),
+                      maxLines: 3,
+                    ),
                   ),
                 ),
               ),
@@ -201,79 +220,80 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget scaleAndRhythm(double height, BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        // Scale
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              TextWithShader(
-                text: 'Scale',
-                style: TextStyle(
-                    fontSize: height * 1.8,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 1.5),
-                colorList: Style.colorList2,
+  Widget scaleAndRhythm() {
+    return Consumer<Song>(
+      builder: (context, song, child) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          // Scale
+          Expanded(
+              child: Column(
+                children: <Widget>[
+                  TextWithShader(
+                    text: 'Scale',
+                    style: TextStyle(
+                        fontSize: height * 1.8,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300,
+                        letterSpacing: 1.5),
+                    colorList: Style.colorList2,
+                  ),
+                  SizedBox(
+                    height: height,
+                  ),
+                  AutoSizeText(
+                    song.scale + " " + song.mode,
+                    // song.scale + " " + song.mode,
+                    style: TextStyle(
+                        fontSize: height * 6,
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.w300,
+                        letterSpacing: 1.5),
+                    maxLines: 1,
+                    group: scaleRhythmGroup,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: height,
-              ),
-              AutoSizeText(
-                "D maj",
-                // song.scale + " " + song.mode,
-                style: TextStyle(
-                    fontSize: height * 6,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 1.5),
-                maxLines: 1,
-                group: scaleRhythmGroup,
-              ),
-            ],
           ),
-        ),
 
-        // Transpose Button
-        transposeButton(height, context),
+          // Transpose Button
+          transposeButton(),
 
-        // Rhythm
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              TextWithShader(
-                text: 'Rhythm',
-                style: TextStyle(
-                    fontSize: height * 1.8,
-                    color: HexColor('#082AF2'),
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 1.5),
-                colorList: Style.colorList2,
-              ),
-              SizedBox(
-                height: height,
-              ),
-              AutoSizeText(
-                "4/4",
-                // song.rhythm,
-                style: TextStyle(
-                    fontSize: height * 6,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 1.5),
-                maxLines: 1,
-                group: scaleRhythmGroup,
-              )
-            ],
+          // Rhythm
+          Expanded(
+            child: Column(
+              children: <Widget>[
+                TextWithShader(
+                  text: 'Rhythm',
+                  style: TextStyle(
+                      fontSize: height * 1.8,
+                      color: HexColor('#082AF2'),
+                      fontWeight: FontWeight.w300,
+                      letterSpacing: 1.5),
+                  colorList: Style.colorList2,
+                ),
+                SizedBox(
+                  height: height,
+                ),
+                AutoSizeText(
+                  song.rhythm,
+                  style: TextStyle(
+                      fontSize: height * 6,
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.w300,
+                      letterSpacing: 1.5),
+                  maxLines: 1,
+                  group: scaleRhythmGroup,
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget transposeButton(double height, BuildContext context) {
+  Widget transposeButton() {
     return NeumorphicButton(
         margin: EdgeInsets.fromLTRB(
             height * 3.5, height * 2, height * 3.5, height * 2),
@@ -306,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  Widget scaleDegree(double height, double width) {
+  Widget scaleDegree() {
      String dim = String.fromCharCode(119212);
      String sharp = String.fromCharCode(9839);
      String flat = String.fromCharCode(9837);
@@ -369,47 +389,49 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget miscChords(double height) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(0, 0, 0, height),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: Neumorphic(
-              margin:
-              EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
-              padding: EdgeInsets.all(height * 2),
-              style: Style.neumorphicStyleProject,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  TextWithShader(
-                    text: 'Misc. Chords',
-                    style: TextStyle(
-                        fontSize: height * 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: 1.5),
-                    colorList: Style.colorList2,
-                  ),
-                  SizedBox(
-                    height: height,
-                  ),
-                  AutoSizeText(
-                    "Misc Chords ",
-                    // song.misc,
-                    style: TextStyle(
-                        fontSize: height * 2.5,
-                        color: Colors.grey[800],
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: 1.5),
-                  )
-                ],
+  Widget miscChords() {
+    return Consumer<Song>(
+      builder: (context, song, child) => song.misc == "" ? Container() : Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 0, height),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Neumorphic(
+                margin:
+                EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
+                padding: EdgeInsets.all(height * 2),
+                style: Style.neumorphicStyleProject,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextWithShader(
+                      text: 'Misc. Chords',
+                      style: TextStyle(
+                          fontSize: height * 2,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 1.5),
+                      colorList: Style.colorList2,
+                    ),
+                    SizedBox(
+                      height: height,
+                    ),
+                    AutoSizeText(
+                      "Misc Chords ",
+                      // song.misc,
+                      style: TextStyle(
+                          fontSize: height * 2.5,
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 1.5),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
