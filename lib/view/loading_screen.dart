@@ -43,8 +43,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     BookList bookList = BookList();
     Future.delayed(Duration(seconds: 3)).then((_) {
       BookList bookList = BookList();
-      Book book = Provider.of<Book>(context, listen: false).initialize(bookList.list[0]);
-      Song song = Provider.of<Song>(context, listen: false).initialize(book.songs["1"]);
+      Provider.of<Book>(context, listen: false).update(bookList.list[0]);
+      Provider.of<Song>(context, listen: false).update(bookList.list[0].songs["1"]);
       Navigator.pushReplacementNamed(
         context, HomeScreen.routeName,
       );

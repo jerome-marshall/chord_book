@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chord_book/model/book.dart';
 import 'package:chord_book/model/book_list.dart';
 import 'package:chord_book/model/song.dart';
+import 'package:chord_book/style.dart';
 import 'package:chord_book/view/widgets/TestWithShader.dart';
+import 'package:chord_book/view/widgets/choose_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -10,7 +12,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../size_config.dart';
-import '../style.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home_screen";
@@ -55,12 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: height * 3),
 
               // Scale Rhythm Degree Misc
-              Expanded(
+              Flexible(
                 child: Container(
                   child: Neumorphic(
                     padding: EdgeInsets.fromLTRB(
-                        height * 3.5, height / 2, height * 3.5, 0),
-                    margin: EdgeInsets.all(height),
+                        height * 3, height / 2, height * 3, 0),
+                    margin: EdgeInsets.fromLTRB(height *1.5, height, height*1.5, height),
                     style: Style.neumorphicStyleDepth,
                     child: NotificationListener<OverscrollIndicatorNotification>(
                       onNotification: (OverscrollIndicatorNotification overScroll){
@@ -109,9 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       height * 2, height * 2, height * 2, 0),
                   padding: EdgeInsets.all(height * 2),
                   style: Style.neumorphicStyleProject,
-                  onPressed: () async {
+                  onPressed: () {
                     // dynamic result =
-                    // await Navigator.pushNamed(context, '/choose_book');
+                    Navigator.pushNamed(context, ChooseBookScreen.routeName);
                     // setState(() {
                     //   textController.text = '1';
                     //   bundle = result;

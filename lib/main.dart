@@ -2,6 +2,7 @@ import 'package:chord_book/model/book.dart';
 import 'package:chord_book/model/book_list.dart';
 import 'package:chord_book/model/song.dart';
 import 'package:chord_book/view/home_screen.dart';
+import 'package:chord_book/view/widgets/choose_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chord_book/view/loading_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -22,7 +23,7 @@ void main() => runApp(MultiProvider(
     routes: {
       LoadingScreen.routeName: (context) => LoadingScreen(),
       HomeScreen.routeName: (context) => HomeScreen(),
-      // ChooseBook.routeName : (context) => ChooseBook(),
+      ChooseBookScreen.routeName : (context) => ChooseBookScreen(),
     },
   ),
 ));

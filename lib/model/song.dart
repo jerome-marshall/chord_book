@@ -16,14 +16,15 @@ class Song with ChangeNotifier {
     this.misc,
   });
 
-  Song initialize(Song song){
+
+  void update(Song song){
     this.number = song.number;
     this.name = song.name;
     this.scale = song.scale;
     this.mode = song.mode;
     this.rhythm = song.rhythm;
     this.misc = song.misc;
-    return this;
+    notifyListeners();
   }
 
   int number;

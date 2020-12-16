@@ -1,4 +1,5 @@
 import 'package:chord_book/model/song.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class Book with ChangeNotifier {
@@ -11,10 +12,10 @@ class Book with ChangeNotifier {
     this.songs,
   });
 
-  Book initialize(Book book){
+  void update(Book book){
     this.name = book.name;
     this.songs = book.songs;
-    return this;
+    notifyListeners();
   }
 
   factory Book.fromJson(Map<String, dynamic> json) => Book(
