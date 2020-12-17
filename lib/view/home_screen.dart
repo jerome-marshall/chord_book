@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 import '../size_config.dart';
 
@@ -21,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController textController;
+  FocusNode focus = FocusNode();
 
   var scaleRhythmGroup = AutoSizeGroup();
   var scaleDegGroup = AutoSizeGroup();
@@ -34,6 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     textController = TextEditingController(text: "001");
+    focus.addListener(onFocusChange);
+  }
+
+  void onFocusChange(){
+    if(focus.hasFocus)
+      textController.clear();
   }
 
   @override
@@ -46,53 +54,57 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: Column(
-            children: <Widget>[
+          body: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => focus.unfocus(),
+            child: Column(
+              children: <Widget>[
 
-              bookSelectButton(),
-              SizedBox(height: height * 2),
+                bookSelectButton(),
+                SizedBox(height: height * 2),
 
-              songNoFieldName(),
-              SizedBox(height: height * 3),
+                songNoFieldName(),
+                SizedBox(height: height * 3),
 
-              // Scale Rhythm Degree Misc
-              Flexible(
-                child: Container(
-                  child: Neumorphic(
-                    padding: EdgeInsets.fromLTRB(
-                        height * 3, height / 2, height * 3, 0),
-                    margin: EdgeInsets.fromLTRB(height *1.5, height, height*1.5, height),
-                    style: Style.neumorphicStyleDepth,
-                    child: NotificationListener<OverscrollIndicatorNotification>(
-                      onNotification: (OverscrollIndicatorNotification overScroll){
-                        overScroll.disallowGlow();
-                        return false;
-                      },
-                      child: SingleChildScrollView(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(
-                              0, (height * 2) + height / 2, 0, height * 3),
-                          child: Column(
-                            children: <Widget>[
-                              // Scale and Rhythm
-                              scaleAndRhythm(),
+                // Scale Rhythm Degree Misc
+                Flexible(
+                  child: Container(
+                    child: Neumorphic(
+                      padding: EdgeInsets.fromLTRB(
+                          height * 3, height / 2, height * 3, 0),
+                      margin: EdgeInsets.fromLTRB(height *1.5, height, height*1.5, height),
+                      style: Style.neumorphicStyleDepth,
+                      child: NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (OverscrollIndicatorNotification overScroll){
+                          overScroll.disallowGlow();
+                          return false;
+                        },
+                        child: SingleChildScrollView(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(
+                                0, (height * 2) + height / 2, 0, height * 3),
+                            child: Column(
+                              children: <Widget>[
+                                // Scale and Rhythm
+                                scaleAndRhythm(),
 
-                              SizedBox(height: height),
+                                SizedBox(height: height),
 
-                              // Scale Degree
-                              scaleDegree(),
+                                // Scale Degree
+                                scaleDegree(),
 
-                              // Misc. Chords
-                              miscChords(),
-                            ],
+                                // Misc. Chords
+                                miscChords(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         )
     );
@@ -110,13 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       height * 2, height * 2, height * 2, 0),
                   padding: EdgeInsets.all(height * 2),
                   style: Style.neumorphicStyleProject,
-                  onPressed: () {
-                    // dynamic result =
-                    Navigator.pushNamed(context, ChooseBookScreen.routeName);
-                    // setState(() {
-                    //   textController.text = '1';
-                    //   bundle = result;
-                    // });
+                  onPressed: () async {
+                    await Navigator.pushNamed(context, ChooseBookScreen.routeName);
+                    textController.text = "001";
                   },
                   child: Consumer<Book>(
                     builder: (context, book, child) => TextWithShader(
@@ -137,6 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget songNoFieldName() {
+    Book book = Provider.of<Book>(context, listen: false);
+    Song song = Provider.of<Song>(context, listen: false);
+
     return Container(
       height: height * 12.5,
       padding: EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
@@ -169,14 +180,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller: textController,
                       textAlign: TextAlign.center,
                       inputFormatters: [LengthLimitingTextInputFormatter(3)],
+                      focusNode: focus,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(height),
-                        hintText: '.....',
+                        // hintText: '.....',
                         border: InputBorder.none,
                       ),
-                      onSubmitted: (String value) async {
-                        print(value);
-                        // song.updateSongNo(songBook[value]);
+                      onSubmitted: (String songNo) {
+                        if(int.parse(songNo) > book.songs.length){
+                          Toast.show("Song not available", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                        } else {
+                          song.update(book.songs[songNo]);
+                          print(songNo);
+                        }
+                      },
+                      onChanged: (String value){
+                        if(value.contains(',') || value.contains('.') || value.contains(' ') || value.contains('-')){
+                          textController.text = value.substring(0, value.length - 1);
+                          Toast.show("Enter a valid number", context, duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+                          textController.selection = TextSelection.fromPosition(TextPosition(offset: textController.text.length));
+                        }
                       },
                       keyboardType: TextInputType.number,
                       style: TextStyle(
