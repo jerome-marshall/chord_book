@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:chord_book/model/scale.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 Song songFromJson(String str) => Song.fromJson(json.decode(str));
 
 String songToJson(Song data) => json.encode(data.toJson());
 
-class Song with ChangeNotifier {
+class Song extends Scale with ChangeNotifier {
   Song({
     this.number,
     this.name,
@@ -16,7 +17,6 @@ class Song with ChangeNotifier {
     this.misc,
   });
 
-
   void update(Song song){
     this.number = song.number;
     this.name = song.name;
@@ -24,6 +24,7 @@ class Song with ChangeNotifier {
     this.mode = song.mode;
     this.rhythm = song.rhythm;
     this.misc = song.misc;
+    setScale(this.scale, this.mode);
     notifyListeners();
   }
 

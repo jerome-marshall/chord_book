@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chord_book/model/book.dart';
 import 'package:chord_book/model/book_list.dart';
 import 'package:chord_book/model/song.dart';
@@ -53,7 +54,7 @@ class ChooseBookScreen extends StatelessWidget {
                       //   width: width * 4,
                       // ),
                       Flexible(
-                        child: Text(
+                        child: AutoSizeText(
                           bookList.list[index].name,
                           style: TextStyle(
                               color: Colors.grey[700],

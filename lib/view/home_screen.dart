@@ -328,10 +328,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget scaleDegree() {
-     String dim = String.fromCharCode(119212);
-     String sharp = String.fromCharCode(9839);
-     String flat = String.fromCharCode(9837);
-     List<String> list = ['Cm', 'D$dim', 'E$flat', 'Fm', 'Gm', 'A$flat', 'B$flat'];
+     Song song = Provider.of<Song>(context);
+     List<String> list = song.scaleList;
 
     return Container(
       alignment: Alignment.center,
