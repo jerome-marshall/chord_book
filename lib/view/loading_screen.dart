@@ -1,9 +1,11 @@
 import 'package:chord_book/model/book.dart';
 import 'package:chord_book/model/book_list.dart';
 import 'package:chord_book/model/song.dart';
+import 'package:chord_book/style.dart';
 import 'package:chord_book/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
@@ -23,11 +25,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // loadData(context);
 
     return Scaffold(
-      backgroundColor: HexColor('#E1E5EC'),
       body: Container(
-        child: SpinKitWave(
-          color: Colors.grey[800],
-          size: 50.0,
+        child: Center(
+          child: Neumorphic(
+            style: Style.neumorphicStyleProject,
+            padding: EdgeInsets.all(30),
+            child: Container(
+              height: 70,
+              width: 70,
+              child: SpinKitWave(
+                color: Colors.grey[800],
+                size: 50.0,
+              ),
+            ),
+          ),
         ),
       ),
     );

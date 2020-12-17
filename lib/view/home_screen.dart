@@ -51,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.safeBlockVertical;
 
+    print("$height $width");
+
     return SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -71,8 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     child: Neumorphic(
                       padding: EdgeInsets.fromLTRB(
-                          height * 3, height / 2, height * 3, 0),
-                      margin: EdgeInsets.fromLTRB(height *1.5, height, height*1.5, height),
+                          width * 5, height / 2, width * 5, 0),
+                      margin: EdgeInsets.fromLTRB(width * 3, height, width * 3, height),
                       style: Style.neumorphicStyleDepth,
                       child: NotificationListener<OverscrollIndicatorNotification>(
                         onNotification: (OverscrollIndicatorNotification overScroll){
@@ -82,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: SingleChildScrollView(
                           child: Container(
                             padding: EdgeInsets.fromLTRB(
-                                0, (height * 2) + height / 2, 0, height * 3),
+                                0, height * 2, 0, height * 2),
                             child: Column(
                               children: <Widget>[
                                 // Scale and Rhythm
@@ -119,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: height * 10,
               child: NeumorphicButton(
                   margin: EdgeInsets.fromLTRB(
-                      height * 2, height * 2, height * 2, 0),
+                      width * 4, height * 2, width * 4, 0),
                   padding: EdgeInsets.all(height * 2),
                   style: Style.neumorphicStyleProject,
                   onPressed: () async {
@@ -150,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Container(
       height: height * 12.5,
-      padding: EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
+      padding: EdgeInsets.fromLTRB(width * 4, height * 2, width * 4, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -320,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget transposeButton() {
     return NeumorphicButton(
         margin: EdgeInsets.fromLTRB(
-            height * 3.5, height * 2, height * 3.5, height * 2),
+            width * 7, height * 2, width * 7, height * 2),
         padding: EdgeInsets.all(height * 2),
         style: Style.neumorphicStyleProjectRound,
         onPressed: () async {
@@ -358,10 +360,10 @@ class _HomeScreenState extends State<HomeScreen> {
       alignment: Alignment.center,
       child: GridView.count(
         shrinkWrap: true,
-        childAspectRatio: width / 3.5,
+        childAspectRatio: 1.15,
         crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 2,
+        mainAxisSpacing: height,
+        crossAxisSpacing: 0,
         physics: NeverScrollableScrollPhysics(),
         primary: false,
         children: list.map((e){
@@ -377,10 +379,11 @@ class _HomeScreenState extends State<HomeScreen> {
             default: {degree = '';}
           }
           return Neumorphic(
-            margin: EdgeInsets.fromLTRB(height * 2, height, height * 2, height),
+            margin: EdgeInsets.fromLTRB(width * 4, height, width * 4, height),
             padding: EdgeInsets.all(height * 1.2),
             style: Style.neumorphicStyleProject,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
                   degree,
@@ -391,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       letterSpacing: 1.5),
                 ),
                 SizedBox(
-                  height: width / 4,
+                  height: height / 2,
                 ),
                 AutoSizeText(
                   e,
@@ -421,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: Neumorphic(
                 margin:
-                EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
+                EdgeInsets.fromLTRB(width * 4, height * 2, width * 4, 0),
                 padding: EdgeInsets.all(height * 2),
                 style: Style.neumorphicStyleProject,
                 child: Column(
