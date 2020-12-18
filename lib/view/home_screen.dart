@@ -196,6 +196,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         } else {
                           song.update(book.songs[songNo]);
                           print(songNo);
+                          if(songNo.length == 1)
+                            songNo = "00" + songNo;
+                          else if (songNo.length == 2)
+                            songNo = "0" + songNo;
+                          textController.text = songNo;
                         }
                       },
                       onChanged: (String value){
@@ -415,6 +420,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  // String getChord(String str){
+  //   String dim = String.fromCharCode(119212);
+  //   String sharp = String.fromCharCode(9839);
+  //   String flat = String.fromCharCode(9837);
+  //   if(str.contains(other))
+  // }
 
   Widget miscChords() {
     return Consumer<Song>(

@@ -31,6 +31,8 @@ class Style {
   );
 
   static var neumorphicStyleDepth = NeumorphicStyle(
+    boxShape: NeumorphicBoxShape.roundRect(
+        BorderRadius.circular(20)),
     color: HexColor('#E1E5EC'),
     depth: -4,
     intensity: 0.8,

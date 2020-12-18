@@ -4,6 +4,7 @@ import 'package:chord_book/model/book_list.dart';
 import 'package:chord_book/model/song.dart';
 import 'package:chord_book/size_config.dart';
 import 'package:chord_book/style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chord_book/style.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -30,72 +31,76 @@ class ChooseBookScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
           appBar: NeumorphicAppBar(
-            title: Text("Choose Song Book"),
+            leading: NeumorphicBackButton(
+              style: Style.neumorphicStyleProjectRound,
+            ),
+            title: Container(
+                // height: height * 10,
+                child: Neumorphic(
+                  // margin: EdgeInsets.fromLTRB(
+                  //     height * 2, height * 2, height * 2, 0),
+                  padding: EdgeInsets.all(height * 1.9),
+                  style: Style.neumorphicStyleProject,
+                  child: TextWithShader(
+                    text: "Choose Song Book",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: height * 5,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 1.5),
+                    colorList: Style.colorList3,
+                  ),
+                )
+            ),
           ),
-          body: Column(
-            children: [
-              Container(
-                  height: height * 10,
-                  child: Neumorphic(
-                      margin: EdgeInsets.fromLTRB(
-                          height * 2, height * 2, height * 2, 0),
-                      padding: EdgeInsets.all(height * 2),
+          body: Neumorphic(
+            style: Style.neumorphicStyleProject,
+            margin: EdgeInsets.fromLTRB(width * 2, 0, width * 2, width * 2),
+            child: Neumorphic(
+              style: Style.neumorphicStyleDepth,
+              margin: EdgeInsets.all(height),
+              child: ListView.builder(
+                itemCount: bookList.list.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: height * 10,
+                    width: width * 90,
+                    child: NeumorphicButton(
+                      margin:
+                      EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
+                      padding: EdgeInsets.all(height * 1.75),
                       style: Style.neumorphicStyleProject,
-                      child: TextWithShader(
-                          text: "Choose Song Book",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: height * 4,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.5),
-                          colorList: Style.colorList3,
-                        ),
-                  )
-              ),
-              Flexible(
-                child: ListView.builder(
-                  itemCount: bookList.list.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: height * 10,
-                      width: width * 90,
-                      child: NeumorphicButton(
-                        margin:
-                        EdgeInsets.fromLTRB(height * 2, height * 2, height * 2, 0),
-                        padding: EdgeInsets.all(height * 1.75),
-                        style: Style.neumorphicStyleProject,
-                        onPressed: () {
-                          book.update(bookList.list[index]);
-                          song.update(bookList.list[index].songs["1"]);
-                          Navigator.pop(context);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            // Image.asset(
-                            //   'assets/song_book.png',
-                            // ),
-                            // SizedBox(
-                            //   width: width * 4,
-                            // ),
-                            Flexible(
-                              child: AutoSizeText(
-                                bookList.list[index].name,
-                                style: TextStyle(
-                                    color: Colors.grey[700],
-                                    fontSize: height * 3.5,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 1.5),
-                              ),
+                      onPressed: () {
+                        book.update(bookList.list[index]);
+                        song.update(bookList.list[index].songs["1"]);
+                        Navigator.pop(context);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          // Image.asset(
+                          //   'assets/song_book.png',
+                          // ),
+                          // SizedBox(
+                          //   width: width * 4,
+                          // ),
+                          Flexible(
+                            child: AutoSizeText(
+                              bookList.list[index].name,
+                              style: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontSize: height * 3.5,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.5),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-            ],
+            ),
           ),
         ));
   }

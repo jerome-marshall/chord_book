@@ -12,17 +12,22 @@ class _TransposeDialogState extends State<TransposeDialog> {
   double width;
   double height;
 
+  double padding;
+  double avatarRadius;
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     width = SizeConfig.safeBlockHorizontal;
     height = SizeConfig.safeBlockVertical;
+    padding = height*3;
+    avatarRadius = height * 8;
 
     Song song = Provider.of<Song>(context);
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(16),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -30,16 +35,16 @@ class _TransposeDialogState extends State<TransposeDialog> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(
-              top: Consts.avatarRadius + Consts.padding,
-              bottom: Consts.padding,
-              left: Consts.padding,
-              right: Consts.padding,
+              top: avatarRadius + padding,
+              bottom: padding,
+              left: padding,
+              right: padding,
             ),
-            margin: EdgeInsets.only(top: Consts.avatarRadius),
+            margin: EdgeInsets.only(top: avatarRadius),
             decoration: new BoxDecoration(
               color: Colors.white,
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(Consts.padding),
+              borderRadius: BorderRadius.circular(padding),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
@@ -56,13 +61,13 @@ class _TransposeDialogState extends State<TransposeDialog> {
                     return Text(
                       'Transpose: ' + song.transVal.toString(),
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: height * 3,
                         fontWeight: FontWeight.w700,
                       ),
                     );
                   },
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: height * 1.5),
                 Text(
                   song.getCapoString(),
                   textAlign: TextAlign.center,
@@ -70,15 +75,15 @@ class _TransposeDialogState extends State<TransposeDialog> {
                     fontSize: 16.0,
                   ),
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: height * 2),
                 Text(
-                  "All Scales",
+                  "#Todo - All Scales",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
                 ),
-                SizedBox(height: 24.0),
+                SizedBox(height: height * 3),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: FlatButton(
@@ -97,6 +102,8 @@ class _TransposeDialogState extends State<TransposeDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               MaterialButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 padding: EdgeInsets.only(top: height * 8),
                 child: Text(
                   '-',
@@ -110,7 +117,7 @@ class _TransposeDialogState extends State<TransposeDialog> {
               ),
               CircleAvatar(
                   backgroundColor: Colors.blueAccent,
-                  radius: Consts.avatarRadius,
+                  radius: avatarRadius,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -123,7 +130,7 @@ class _TransposeDialogState extends State<TransposeDialog> {
                             letterSpacing: 1.5),
                       ),
                       Text(
-                        ' ' + song.mode,
+                        song.mode,
                         style: TextStyle(
                             fontSize: height * 2,
                             color: Colors.white,
@@ -133,6 +140,8 @@ class _TransposeDialogState extends State<TransposeDialog> {
                     ],
                   )),
               MaterialButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 padding: EdgeInsets.only(top: height * 8),
                 child: Text(
                   '+',
@@ -152,11 +161,4 @@ class _TransposeDialogState extends State<TransposeDialog> {
       ),
     );
   }
-}
-
-class Consts {
-  Consts._();
-
-  static const double padding = 16.0;
-  static const double avatarRadius = 66.0;
 }
