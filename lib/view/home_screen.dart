@@ -4,7 +4,8 @@ import 'package:chord_book/model/book_list.dart';
 import 'package:chord_book/model/song.dart';
 import 'package:chord_book/style.dart';
 import 'package:chord_book/view/widgets/TestWithShader.dart';
-import 'package:chord_book/view/widgets/choose_book_screen.dart';
+import 'package:chord_book/view/widgets/transpose_dialog.dart';
+import 'file:///D:/WorkSpace/Flutter/chord_book/lib/view/choose_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -61,9 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () => focus.unfocus(),
             child: Column(
               children: <Widget>[
-
+                SizedBox(height: height),
+                SizedBox(height: height/2),
                 bookSelectButton(),
-                SizedBox(height: height * 2),
+                SizedBox(height: height * 1.5),
 
                 songNoFieldName(),
                 SizedBox(height: height * 3),
@@ -118,10 +120,10 @@ class _HomeScreenState extends State<HomeScreen> {
       children: <Widget>[
         Flexible(
           child: Container(
-              height: height * 10,
+              margin: EdgeInsets.fromLTRB(
+                  width * 4, height * 2, width * 4, 0),
               child: NeumorphicButton(
-                  margin: EdgeInsets.fromLTRB(
-                      width * 4, height * 2, width * 4, 0),
+
                   padding: EdgeInsets.all(height * 2),
                   style: Style.neumorphicStyleProject,
                   onPressed: () async {
@@ -133,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       text: book.name,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: height * 4,
+                          fontSize: height * 3.7,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.5),
                       colorList: Style.colorList3,
@@ -325,12 +327,10 @@ class _HomeScreenState extends State<HomeScreen> {
             width * 7, height * 2, width * 7, height * 2),
         padding: EdgeInsets.all(height * 2),
         style: Style.neumorphicStyleProjectRound,
-        onPressed: () async {
-          // dynamic result = await showDialog(
-          //   context: context,
-          //   builder: (BuildContext context) => TransposeDialog(song: song),
-          // );
-        },
+        onPressed: () => showDialog(
+            context: context,
+            builder: (BuildContext context) => TransposeDialog(),
+          ),
         child: Column(
           children: <Widget>[
             TextWithShader(
@@ -338,18 +338,20 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: height * 2, letterSpacing: 1.0, color: Colors.white),
               colorList: Style.colorList2,
             ),
-            AutoSizeText(
-              "0",
-              // song.transpose.toString(),
-              style: TextStyle(
-                  fontSize: height * 2.5,
-                  fontWeight: FontWeight.w300,
-                  letterSpacing: 1.5,
-                  color: Colors.grey[700]
+            Consumer<Song>(
+              builder: (context, song, child) => AutoSizeText(
+                song.transVal >= 0 ? ( song.transVal == 0 ? song.transVal.toString() : "+" + song.transVal.toString() ) : "-" + song.transVal.toString(),
+                style: TextStyle(
+                    fontSize: height * 2.5,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 1.5,
+                    color: Colors.grey[700]
+                ),
               ),
             ),
           ],
-        ));
+        )
+    );
   }
 
   Widget scaleDegree() {

@@ -9,7 +9,7 @@ import 'package:chord_book/style.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 
-import 'TestWithShader.dart';
+import 'widgets/TestWithShader.dart';
 
 class ChooseBookScreen extends StatelessWidget {
   static const String routeName = '/choose_book_screen';

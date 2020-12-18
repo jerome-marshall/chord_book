@@ -22,6 +22,7 @@ class TextWithShader extends StatelessWidget {
       child: AutoSizeText(
         text,
         style: style,
+        maxLines: 1,
       ),
     );
   }

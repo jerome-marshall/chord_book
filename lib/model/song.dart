@@ -17,23 +17,13 @@ class Song extends Scale with ChangeNotifier {
     this.misc,
   });
 
-  void update(Song song){
-    this.number = song.number;
-    this.name = song.name;
-    this.scale = song.scale;
-    this.mode = song.mode;
-    this.rhythm = song.rhythm;
-    this.misc = song.misc;
-    setScale(this.scale, this.mode);
-    notifyListeners();
-  }
-
   int number;
   String name;
   String scale;
   String mode;
   String rhythm;
   String misc;
+  int transVal = 0;
 
   factory Song.fromJson(Map<String, dynamic> json) => Song(
     number: json["number"],
@@ -52,4 +42,76 @@ class Song extends Scale with ChangeNotifier {
     "rhythm": rhythm,
     "misc": misc,
   };
+
+  void update(Song song){
+    this.number = song.number;
+    this.name = song.name;
+    this.scale = song.scale;
+    this.mode = song.mode;
+    this.rhythm = song.rhythm;
+    this.misc = song.misc;
+    this.transVal = 0;
+    setScale(this.scale, this.mode);
+    notifyListeners();
+  }
+
+  void updateScale(){
+    setScale(this.scale, this.mode);
+    notifyListeners();
+  }
+
+  void transpose(String transType){
+    int scaleNo;
+
+    if(transType == "+")
+      this.transVal++;
+    if(transType == '-')
+      this.transVal--;
+
+    if(this.transVal > 11 || this.transVal < -11)
+      this.transVal = 0;
+
+    print("transVal: " + this.transVal.toString());
+    print("ScaleNo: " + getScaleNumber(this.scale).toString());
+
+    if(transType == "+")
+      scaleNo = getScaleNumber(this.scale) - 1 ;
+    if(transType == "-")
+      scaleNo = getScaleNumber(this.scale) + 1 ;
+
+    scaleNo %= 12;
+    this.scale = getScale(scaleNo);
+
+    print("NewScaleNo: " + scaleNo.toString());
+
+    notifyListeners();
+  }
+
+  String getCapoString(){
+    String suffix;
+
+    int capoVal = transVal;
+    if (capoVal < 0)
+      capoVal = 12 + capoVal;
+
+    switch(capoVal){
+      case 0: return "No Capo";
+      case 1: {
+        suffix = "st";
+        break;
+      }
+      case 2: {
+        suffix = "nd";
+        break;
+      }
+      case 3: {
+        suffix = "rd";
+        break;
+      }
+      default: {
+        suffix = "th";
+      }
+    }
+    return "Capo on " + capoVal.toString() + suffix + " fret";
+  }
 }

@@ -2,7 +2,7 @@ import 'package:chord_book/model/book.dart';
 import 'package:chord_book/model/book_list.dart';
 import 'package:chord_book/model/song.dart';
 import 'package:chord_book/view/home_screen.dart';
-import 'package:chord_book/view/widgets/choose_book_screen.dart';
+import 'file:///D:/WorkSpace/Flutter/chord_book/lib/view/choose_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chord_book/view/loading_screen.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -16,7 +16,7 @@ void main() => runApp(MultiProvider(
     ),
     ChangeNotifierProvider<Song>(
         create: (cxt) => Song()
-    )
+    ),
   ],
   child: NeumorphicApp(
     // theme: ThemeData(scaffoldBackgroundColor: HexColor('#E1E5EC')),
