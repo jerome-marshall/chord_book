@@ -30,7 +30,7 @@ dependencies:
   hexcolor: ^1.0.4
   provider: ^4.1.3
   toast: ^0.1.5
-#  bot_toast: ^3.0.5
+  #  bot_toast: ^3.0.5
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -69,9 +69,24 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: MusiSync
-     fonts:
-       - asset: assets/fonts/Musisync.ttf
+    - family: OpenSans
+      fonts:
+          - asset: assets/fonts/OpenSansLight.ttf
+            weight: 300
+          - asset: assets/fonts/OpenSansRegular.ttf
+            weight: 500
+          - asset: assets/fonts/OpenSansBold.ttf
+            weight: 700
+          - asset: assets/fonts/OpenSansExtraBold.ttf
+            weight: 900
+    - family: MusiSync
+      fonts:
+          - asset: assets/fonts/Musisync.otf
+    - family: GothamLightMusic
+      fonts:
+          - asset: assets/fonts/GothamLightMusic.ttf
+
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

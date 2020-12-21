@@ -124,6 +124,7 @@ class _TransposeDialogState extends State<TransposeDialog> {
                       Text(
                         song.scale,
                         style: TextStyle(
+                            fontFamily: 'OpenSans',
                             fontSize: height * 7,
                             color: Colors.white,
                             fontWeight: FontWeight.w300,

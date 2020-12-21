@@ -278,6 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     song.scale + " " + song.mode,
                     // song.scale + " " + song.mode,
                     style: TextStyle(
+                        fontFamily: 'OpenSans',
                         fontSize: height * 6,
                         color: Colors.grey[800],
                         fontWeight: FontWeight.w300,
@@ -311,6 +312,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 AutoSizeText(
                   song.rhythm,
                   style: TextStyle(
+                      fontFamily: 'OpenSans',
                       fontSize: height * 6,
                       color: Colors.grey[800],
                       fontWeight: FontWeight.w300,
@@ -347,6 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, song, child) => AutoSizeText(
                 song.transVal >= 0 ? ( song.transVal == 0 ? song.transVal.toString() : "+" + song.transVal.toString() ) : "-" + song.transVal.toString(),
                 style: TextStyle(
+                    fontFamily: 'OpenSans',
                     fontSize: height * 2.5,
                     fontWeight: FontWeight.w300,
                     letterSpacing: 1.5,
@@ -406,10 +409,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 AutoSizeText(
                   e,
                   style: TextStyle(
+                    fontFamily: 'OpenSans',
                       fontSize: height * 3.5,
                       color: Colors.grey[800],
                       fontWeight: FontWeight.w300,
-                      letterSpacing: 1.5),
+                      // letterSpacing: e.contains('\$') || e.contains('%') || e.contains('^') ? 3 : 2 ),
+                    letterSpacing: 1.5),
                   group: scaleDegGroup,
                   maxLines: 1,
                 )
