@@ -194,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         if(int.parse(songNo) > book.songs.length){
                           Toast.show("Song not available", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                         } else {
+                          songNo = int.parse(songNo).toString();
                           song.update(book.songs[songNo]);
                           print(songNo);
                           if(songNo.length == 1)
